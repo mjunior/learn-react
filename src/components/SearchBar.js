@@ -24,7 +24,10 @@ export default class SearchBar extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = { value: '' };
+    this.state = { 
+      value: '',
+      onSearching: false
+    };
   }
 
   handleChange = (event) => {
@@ -34,11 +37,16 @@ export default class SearchBar extends React.Component {
   //quando enviar, preciso mandar pra /abc
   handleSubmit = (event) => {
     event.preventDefault();
-    const value = this.state.value;
-    createBrowserHistory().replace(`/items?search=${value}`) //usando lib history
+    this.setState({onSearching: true});
   }
 
   render() {
+    if (this.state.onSearching === true){
+      const value = this.state.value;
+      this.setState({onSearching: false});
+      return (<Redirect to={`/items?search=${value}`} />)
+    }
+
     return (
       <div>
         <Navbar color="dark" expand="md">
